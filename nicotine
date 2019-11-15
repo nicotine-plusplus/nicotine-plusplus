@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # COPYRIGHT (C) 2016-2017 Michael Labouebe <gfarmerfr@free.fr>
@@ -41,66 +41,50 @@ win32 = platform.system().startswith("Win")
 
 def checkenv():
 
-    # Require Python 2.7
+    # Require Python 3.6 or greater
     try:
-        assert sys.version_info[:2] == (2, 7), '.'.join(
+        assert sys.version_info[:2] >= (3, 6), '.'.join(
             map(str, sys.version_info[:3])
         )
     except AssertionError as e:
-        return _("""You're using an unsupported version of Python (%s).
-You should install Python 2.7.X.""") % (e)
-
-    # Require GTK+ 2.24
-    try:
-        import gtk
-    except Exception as e:
-        return _("Cannot find GTK+ 2.24.X, please install it.")
-    else:
-        try:
-            assert gtk.gtk_version[:2] == (2, 24), '.'.join(
-                map(str, gtk.gtk_version[:3])
-            )
-        except AssertionError as e:
-            return _("""You're using an unsupported version of GTK (%s).
-You should install GTK 2.24.X.""") % (e)
+        return """You're using an unsupported version of Python (%s).
+You should install Python 3.6.X or greater.""" % e
 
     # Require PyGTK 2.24
     try:
-        import pygtk
+        import kivy
     except Exception as e:
-        return _("Cannot find PyGTK 2.24.X, please install it.")
+        return "Cannot find PyGTK 2.24.X, please install it."
     else:
         try:
-            assert gtk.pygtk_version[:2] == (2, 24), '.'.join(
-                map(str, gtk.pygtk_version[:3])
-            )
+            assert kivy.__version__ == '1.11.1'
         except AssertionError as e:
-            return _("""You're using an unsupported version of PyGTK (%s).
-You should install PyGTK 2.24.X.""") % (e)
+            return """You're using an unsupported version of Kivy (%s).
+You should install Kivy 1.11.1.""" % e
 
     # Require pynicotine
     try:
         import pynicotine
-    except ImportError, e:
-        return _("""Can not find Nicotine+ modules.
+    except ImportError as e:
+        return """Can not find Nicotine+ modules.
 Perhaps they're installed in a directory which is not
 in an interpreter's module search path.
 (there could be a version mismatch between
 what version of python was used to build the Nicotine
-binary package and what you try to run Nicotine+ with).""")
+binary package and what you try to run Nicotine+ with)."""
 
-    # Check for optionnal GeoIP
+    # Check for optional GeoIP
     try:
         import GeoIP
     except ImportError:
         try:
             import _GeoIP
         except ImportError:
-            msg = _("""Nicotine+ supports a country code blocker.
+            msg = """Nicotine+ supports a country code blocker.
 This requires a (GPL'ed) library called GeoIP. You can find it here:
 C library:       http://www.maxmind.com/app/c
 Python bindings: http://www.maxmind.com/app/python
-(the python bindings require the C library)""")
+(the python bindings require the C library)"""
             log.addwarning(msg)
 
     # Windows specific checks
@@ -108,19 +92,19 @@ Python bindings: http://www.maxmind.com/app/python
 
         # dbhash might be a good choice
         try:
-            import dbhash
+            import dbm.bsd
         except:
             log.addwarning(
-                _("Warning: the Berkeley DB module, dbhash, " +
-                  "could not be loaded."))
+                "Warning: the Berkeley DB module, dbhash, " +
+                "could not be loaded.")
 
         # win32file is used to handle hidden files
         try:
             import win32file
         except:
-            msg = _("""Nicotine+ supports hidden files attributes on windows.
+            msg = """Nicotine+ supports hidden files attributes on windows.
 This requires a python module called pypiwin32. You can find it here:
-https://pypi.python.org/pypi/pypiwin32""")
+https://pypi.python.org/pypi/pypiwin32"""
             log.addwarning(msg)
 
     return None
@@ -129,13 +113,13 @@ https://pypi.python.org/pypi/pypiwin32""")
 def version():
     try:
         import pynicotine.utils
-        print _("Nicotine+ version %s" % pynicotine.utils.version)
-    except ImportError, error:
-        print _("Cannot find the pynicotine.utils module.")
+        print(("Nicotine+ version %s" % pynicotine.utils.version))
+    except ImportError as error:
+        print("Cannot find the pynicotine.utils module.")
 
 
 def usage():
-    print _("""Nicotine+ is a Soulseek client.
+    print("""Nicotine+ is a Soulseek client.
 Usage: nicotine [OPTION]...
   -c file, --config=file      Use non-default configuration file
   -p dir,  --plugins=dir      Use non-default directory for plugins
@@ -177,7 +161,7 @@ def renameprocess(newname, debug=False):
         errors.append("Failed FreeBSD style")
 
     if debug and errors:
-        msg = [_("Errors occured while trying to change process name:")]
+        msg = ["Errors occured while trying to change process name:"]
         for i in errors:
             msg.append("%s" % (i,))
         log.addwarning('\n'.join(msg))
@@ -254,7 +238,7 @@ def run():
     result = checkenv()
 
     if result is None:
-        from pynicotine.gtkgui import frame
+        from pynicotine.kivygui import frame
 
         app = frame.MainApp(config, plugins, trayicon, hidden, bindip, port)
 
@@ -265,7 +249,7 @@ def run():
             dumpfile = os.path.expanduser(config) + ".profile"
             profiler = cProfile.Profile()
 
-            log.add(_("Starting using the profiler (saving dump to %s)") % dumpfile)
+            log.add("Starting using the profiler (saving dump to %s)" % dumpfile)
 
             profiler.enable()
             app.MainLoop()
@@ -275,7 +259,8 @@ def run():
         else:
             app.MainLoop()
     else:
-        print result
+        print(result)
+
 
 if __name__ == '__main__':
     try:

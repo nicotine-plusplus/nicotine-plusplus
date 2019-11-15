@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # COPYRIGHT (C) 2016-2017 Michael Labouebe <gfarmerfr@free.fr>
@@ -122,20 +122,20 @@ for (path, dirs, docfiles) in os.walk("doc"):
 if __name__ == '__main__':
 
     from pynicotine.utils import version
-    LONG_DESCRIPTION = """Nicotine+ is a client for the SoulSeek filesharing network, forked from Nicotine."""
+    LONG_DESCRIPTION = """nicotine++ is a client for the SoulSeek filesharing network, forked from Nicotine+."""
 
     setup(
         name="nicotine",
         version=version,
         license="GPLv3",
-        description="Nicotine+, a client for the SoulSeek filesharing network.",
+        description="nicotine++, a client for the SoulSeek filesharing network.",
         author="Michael Labouebe",
         author_email="gfarmerfr@free.fr",
         url="https://www.nicotine-plus.org/",
-        packages=['pynicotine', 'pynicotine.gtkgui', 'pynicotine.gtkgui.ui'],
-        package_dir={'pynicotine.gtkgui': 'pynicotine/gtkgui'},
+        packages=['pynicotine', 'pynicotine.kivygui', 'pynicotine.kivygui.ui'],
+        package_dir={'pynicotine.kivygui': 'pynicotine/kivygui'},
         package_data={
-            'pynicotine.gtkgui.ui': ["*.ui"]
+            'pynicotine.kivygui.ui': ["*.ui"]
         },
         scripts=['nicotine'],
         long_description=LONG_DESCRIPTION,

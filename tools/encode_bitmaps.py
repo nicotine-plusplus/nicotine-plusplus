@@ -52,7 +52,7 @@ missing = os.path.join("img", "missingflag.png")
 if isfile(missing):
     flagtable.append(((missing), 'flag_'))
 
-outf = open(os.path.join("pynicotine", "gtkgui", "imagedata.py"), "w")
+outf = open(os.path.join("pynicotine", "kivygui", "imagedata.py"), "w")
 
 for image in sorted(table):
     print image[0]
